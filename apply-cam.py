@@ -136,12 +136,10 @@ else:
     # resize the image to its target dimensions
     orig = cv2.imread(args["image"])
     orig = cv2.resize(orig, (224, 224))
-    resized = cv2.resize(orig, (224, 224))
-    resized = tf.expand_dims(resized, axis=0)     # from 224 x 224 to 224 x 224 x 1 
-    # resized = tf.divide(resized, 255)              # normalize
-    # resized = tf.reshape(resized, [1, 224, 224, 1])
-
-    preds = model.predict(resized) 
+    image = orig.astype('float32') / 255
+    
+    image = np.expand_dims(image, axis=0)
+    preds = model.predict(image) 
     result = np.argmax(preds[0])
 
     category_label = CATEGORIES[result]
@@ -150,12 +148,12 @@ else:
     plt.title("Prediction:" + category_label)
     plt.imshow(cv2.cvtColor(orig, cv2.COLOR_BGR2RGB))
     
-    cam = GradCAM(model, result, layerName = 'CONV_4', customModel = True)
-    heatmap = cam.compute_heatmap(resized)
+    cam = GradCAM(model, result, customModel = True)
+    heatmap = cam.compute_heatmap(image)
     heatmap = cv2.resize(heatmap, (orig.shape[1], orig.shape[0]))
     (heatmap, output) = cam.overlay_heatmap(heatmap, orig, alpha = 0.5)
     
-    print(heatmap.shape, resized.shape)
+    print(heatmap.shape, image.shape)
 
     fig, ax = plt.subplots(1, 3)
     ax[0].imshow(heatmap)
