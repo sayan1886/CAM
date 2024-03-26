@@ -1,0 +1,5 @@
+matplotlib
+tensorflow
+opencv-python
+imutils
+numpy
