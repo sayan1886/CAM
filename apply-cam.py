@@ -145,6 +145,7 @@ else:
     category_label = CATEGORIES[result]
     text = f'Found: {category_label}'
     print(text)
+    plt.axis("off")
     plt.title("Prediction:" + category_label)
     plt.imshow(cv2.cvtColor(orig, cv2.COLOR_BGR2RGB))
     
@@ -157,8 +158,14 @@ else:
 
     fig, ax = plt.subplots(1, 3)
     ax[0].imshow(heatmap)
-    ax[1].imshow(orig)
+    ax[0].axis("off")
+    ax[0].set_title("Heatmap")
+    ax[1].imshow(cv2.cvtColor(orig, cv2.COLOR_BGR2RGB))
+    ax[1].axis("off")
+    ax[1].set_title("Image")
     ax[2].imshow(output)
+    ax[2].axis("off")
+    ax[2].set_title("Merged")
     plt.show()
 
 
