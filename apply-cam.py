@@ -149,7 +149,7 @@ else:
     plt.title("Prediction:" + category_label)
     plt.imshow(cv2.cvtColor(orig, cv2.COLOR_BGR2RGB))
     
-    cam = GradCAM(model, result, customModel = True)
+    cam = GradCAM(model, result, customModel = (args["model"] == "cnn"))
     heatmap = cam.compute_heatmap(image)
     heatmap = cv2.resize(heatmap, (orig.shape[1], orig.shape[0]))
     (heatmap, output) = cam.overlay_heatmap(heatmap, orig, alpha = 0.5)
